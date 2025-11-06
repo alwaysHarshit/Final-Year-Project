@@ -1,0 +1,42 @@
+# 🔒 Environment and dependency folders
+node_modules/
+.venv/
+.env
+
+# Ignore .env files anywhere inside nested folders
+**/.env
+
+# Ignore node_modules in any subdirectory
+**/node_modules/
+
+# IDE and system files
+.idea/
+.vscode/
+.DS_Store
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Docker
+**/.dockerignore
+
+# Build / cache
+dist/
+build/
+*.cache
+*.tmp
+
+# Misc
+*.pid
+*.seed
+*.tgz
+*.zip
+*.exe
+*.pdf
+*.png
+*.jpg
+*.jpeg

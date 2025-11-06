@@ -1,0 +1,24 @@
+F:\final year project
+│
+├── docker-compose.yml      ← (you’ll create this file)
+├── .gitignore
+│
+├── master-server/
+│   ├── Dockerfile
+│   ├── src/
+│   └── .env
+│
+├── server_1/
+│   ├── Dockerfile
+│   ├── src/
+│   └── .env
+│
+├── server_2/
+│   ├── Dockerfile
+│   ├── src/
+│   └── .env
+│
+├── server_3/
+│   ├── Dockerfile
+│   ├── src/
+│   └── .env

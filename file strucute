@@ -1,24 +1,47 @@
 F:\final year project
 │
-├── docker-compose.yml      ← (you’ll create this file)
+├── docker-compose.yml
 ├── .gitignore
+├── client/
+│   └── src/
+│   └── README.md
 │
 ├── master-server/
 │   ├── Dockerfile
 │   ├── src/
-│   └── .env
+│   │   ├── controller/
+│   │   │   ├── data.analysis.js
+│   │   │   └── user.controller.js
+│   │   ├── db/
+│   │   │   └── db.model.js
+│   │   ├── Routing/
+│   │   │   └── userRoutes.js
+│   │   └── utils/
+│   │       └── multer.middleware.js
+│   ├── .env
+│   ├── package.json
+│   ├── package-lock.json
+│   └── README.md
 │
 ├── server_1/
 │   ├── Dockerfile
 │   ├── src/
-│   └── .env
+│   │   ├── controller/
+│   │   │   └── cleaning.js
+│   │   ├── pythonScripts/
+│   │   │   └── cleaning.py
+│   │   ├── routes/
+│   │   │   ├── server1.routes.js
+│   │   │   ├── db.model.js
+│   │   │   └── index.js
+│   ├── demo.env
+│   ├── package.json
+│   ├── package-lock.json
+│   └── README.md
 │
-├── server_2/
-│   ├── Dockerfile
-│   ├── src/
-│   └── .env
+├── shared/
+│   └── dataset/
+│       └── BigBasketProducts_1762974949798.csv
 │
-├── server_3/
-│   ├── Dockerfile
-│   ├── src/
-│   └── .env
+├── .idea/
+├── .venv/

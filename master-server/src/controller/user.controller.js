@@ -19,6 +19,7 @@ export const userController=async (req, res) => {
             },
             createdAt: new Date(),
         });
+
         console.log("job saved to db",data);
         res.status(200).json({ jobId, message: "file uploaded successfully" });
     } catch (err) {

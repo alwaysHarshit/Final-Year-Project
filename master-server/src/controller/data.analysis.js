@@ -1,36 +1,96 @@
 import axios from "axios";
 import {JobSchema} from "../db/db.model.js";
+import {io} from "../index.js";
+
+
 //create job in scheduler
+// this pipeline is not fault torrent need to be changed
+
 
 export const dataAnalysis = async (req, res) => {
     const { jobId } = req.query;
-    console.log("jobId in data analysis",jobId)
 
-// call cleaning module and Axios automatically rejects the promise (goes to .catch) if the server returns any status outside 2xx (like 400, 404, 500).
+    console.log("jobId in data analysis", jobId)
 
     try {
-        const start = Date.now();
+        const updateStage = async (stage, status, start=null, end=null) => {
+            await JobSchema.findByIdAndUpdate(jobId, {
+                [`stages.${stage}.status`]: status,
+                [`stages.${stage}.startedAt`]: start,
+                [`stages.${stage}.endedAt`]: end,
+                updatedAt: new Date()
+            });
+        };
+
+        // --- Getting Insight File ---
+        sendUpdate(jobId, "Fetching metafile...");
+        const { data: metaFileName } = await axios.get(
+            "http://localhost:3001/internal/insight",
+            { params: { jobId } }
+        );
+        sendUpdate(jobId, `Metafile fetched: ${metaFileName}`);
+
+        // --- Cleaning Stage ---
+        let start = new Date();
+        sendUpdate(jobId, "Cleaning started...");
+        await updateStage("cleaning", "in-progress", start, null);
 
         await axios.get("http://localhost:3001/internal/cleaning", {
-            params: {jobId:jobId},
+            params: { jobId, metaFileName }
         });
 
-        const end = Date.now();
+        let end = new Date();
+        await updateStage("cleaning", "done", start, end);
+        sendUpdate(jobId, "Cleaning completed ✔");
 
-        console.log("✅ Data Cleaning result");
+        // --- Transformation Stage ---
+        start = new Date();
+        sendUpdate(jobId, "Transformation started...");
+        await updateStage("transforming", "in-progress", start, null);
 
-        const update = {
-            "stages.cleaning.status": "in-progress",
-            "stages.cleaning.startedAt": start,
-            "stages.cleaning.endedAt": end,
-            "updatedAt": new Date()
-        };
-        // update job in db
-        await JobSchema.findByIdAndUpdate(jobId, update, { new: true });
+        await axios.get("http://localhost:3001/internal/transformation", {
+            params: { jobId, metaFileName }
+        });
+
+        end = new Date();
+        await updateStage("transforming", "done", start, end);
+        sendUpdate(jobId, "Transformation completed ✔");
+
+        // --- Analysis Stage ---
+        start = new Date();
+        sendUpdate(jobId, "Analysis started...");
+        await updateStage("analysis", "in-progress", start, null);
+
+        await axios.get("http://localhost:3001/internal/analysis", {
+            params: { jobId, metaFileName }
+        });
+
+        end = new Date();
+        await updateStage("analysis", "done", start, end);
+        sendUpdate(jobId, "Analysis completed ✔");
+
+        // --- Job Completed ---
+        await JobSchema.findByIdAndUpdate(jobId, {
+            jobCompletedAt: new Date()
+        });
+
+        sendUpdate(jobId, "🎉 All stages completed! Insights ready.");
+
+        return res.json({ message: "All stages completed" });
 
     } catch (error) {
-        console.error("❌ Error in cleaning module:", error.message);
-        res.status(500).json({ message: "error in cleaning module" });
+        console.error("❌ Error in job processing:", error.message);
+        sendUpdate(jobId, "❌ Error occurred during processing");
+
+        await JobSchema.findByIdAndUpdate(jobId, {
+            "stages.cleaning.status": "failed",
+            updatedAt: new Date()
+        });
     }
-    res.status(200).json({message:"update successful"})
 }
+
+
+
+const sendUpdate = (jobId, message) => {
+    io.to(jobId).emit("statusUpdate", message);
+};

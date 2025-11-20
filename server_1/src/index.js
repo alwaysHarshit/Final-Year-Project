@@ -1,8 +1,9 @@
 import express from 'express';
 import cors from 'cors';
-import { exec } from 'child_process';
+
 import {router} from "./routes/server1.routes.js";
 import mongoose from "mongoose";
+import {main} from "./utils/Ai.connection.js";
 
 const app=express()
 
@@ -15,7 +16,7 @@ app.use(cors({
 app.use("/internal",router);
 
 
-mongoose.connect()
+mongoose.connect("mongodb+srv://new_user_21:eNa30YiQKtPaPYbn@cluster0.atfrl.mongodb.net/?appName=Cluster0")
     .then(() => {
         console.log("✅ connected to database");
 
@@ -26,7 +27,7 @@ mongoose.connect()
 
 try {
     app.listen(3001,()=>{
-        console.log(`server1 is running on port 3001`)
+        console.log(`server1 is running on port 3001`);
     });
 } catch (listenErr) {
     console.error("❌ Error during app.listen():", listenErr);

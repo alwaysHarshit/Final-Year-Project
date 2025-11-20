@@ -49,6 +49,16 @@ export default function FileUpload() {
                     }
                     )
             }}>push me</button>
+            <button onClick={()=>{
+                axios.get("http://localhost:3000/api/data-insight",{params:{jobId:"1762973275723"}})
+                    .then(res=>{
+                        console.log(res.data)
+                    })
+                    .catch(err=>{
+                            console.log(err)
+                        }
+                    )
+            }}>push me for insights</button>
             {message && <p>{message}</p>}
         </div>
     );

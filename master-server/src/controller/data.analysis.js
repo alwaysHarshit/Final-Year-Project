@@ -1,6 +1,7 @@
 import axios from "axios";
 import {JobSchema} from "../db/db.model.js";
 import {io} from "../index.js";
+import fs from "fs";
 
 
 //create job in scheduler
@@ -28,6 +29,7 @@ export const dataAnalysis = async (req, res) => {
             "http://localhost:3001/internal/insight",
             { params: { jobId } }
         );
+
         //update in
         sendUpdate(jobId, `Metafile fetched: ${metaFileName}`);
 

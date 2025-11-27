@@ -177,6 +177,7 @@ def generate_insights():
         "sample_data": df.head(5).to_dict(orient='records') # Small sample for context
     }
 
+
     # 5. Save to File
     output_filename = f"{os.path.splitext(file_name)[0]}_insights.json"
     output_path = os.path.join(OUTPUT_DIR, output_filename)

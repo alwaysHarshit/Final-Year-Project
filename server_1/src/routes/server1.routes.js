@@ -1,7 +1,7 @@
 import {cleaning} from "../controller/cleaning.js";
 import express from "express";
-import {dataInsight} from "../controller/dataInsight.js";
+import {internalDataInsight} from "../controller/internalDataInsight.js";
 
 export const router = express.Router();
 router.get('/cleaning',cleaning);
-router.get("/insight",dataInsight)
+router.get("/insight",internalDataInsight)

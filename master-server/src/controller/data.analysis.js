@@ -24,10 +24,11 @@ export const dataAnalysis = async (req, res) => {
 
         // --- Getting Insight File ---
         sendUpdate(jobId, "Fetching metafile...");
-        const { data: metaFileName } = await axios.get(
+        const {metaFileName}=await axios.get(
             "http://localhost:3001/internal/insight",
             { params: { jobId } }
         );
+        //update in
         sendUpdate(jobId, `Metafile fetched: ${metaFileName}`);
 
         // --- Cleaning Stage ---
@@ -36,7 +37,7 @@ export const dataAnalysis = async (req, res) => {
         await updateStage("cleaning", "in-progress", start, null);
 
         await axios.get("http://localhost:3001/internal/cleaning", {
-            params: { jobId, metaFileName }
+            params: { jobId}
         });
 
         let end = new Date();
@@ -49,7 +50,7 @@ export const dataAnalysis = async (req, res) => {
         await updateStage("transforming", "in-progress", start, null);
 
         await axios.get("http://localhost:3001/internal/transformation", {
-            params: { jobId, metaFileName }
+            params: { jobId}
         });
 
         end = new Date();
@@ -62,7 +63,7 @@ export const dataAnalysis = async (req, res) => {
         await updateStage("analysis", "in-progress", start, null);
 
         await axios.get("http://localhost:3001/internal/analysis", {
-            params: { jobId, metaFileName }
+            params: { jobId}
         });
 
         end = new Date();

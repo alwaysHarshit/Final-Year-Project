@@ -3,7 +3,7 @@ F:\final year project
 ├── docker-compose.yml
 ├── .gitignore
 ├── client/
-│   └── src/
+│   └── src
 │   └── README.md
 │
 ├── master-server/

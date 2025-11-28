@@ -3,6 +3,7 @@
 import {JobSchema} from "../db/db.model.js";
 
 export const userController=async (req, res) => {
+    
     const {file}=req;
     console.log("file received in master server");
 

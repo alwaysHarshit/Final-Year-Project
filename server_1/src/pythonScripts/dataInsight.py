@@ -18,10 +18,7 @@ except IndexError:
 # Paths
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 FILE_PATH = os.path.abspath(os.path.join(SCRIPT_DIR, "..", "..", "..", "shared", "dataset", file_name))
-OUTPUT_DIR = os.path.abspath(os.path.join(SCRIPT_DIR, "..", "..", "..", "shared", "metaFiles"))
 
-# Ensure output directory exists
-os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 class NpEncoder(json.JSONEncoder):
     """
@@ -176,16 +173,15 @@ def generate_insights():
         "correlations": correlations,
         "sample_data": df.head(5).to_dict(orient='records') # Small sample for context
     }
+    # Print ONLY debug in stderr (doesn't affect JSON)
+    print("DEBUG: Finished processing EDA...", file=sys.stderr)
 
+    # Print markers + JSON in stdout
+    print("###START_JSON###")
+    print(json.dumps({"output": final_output}, indent=2, cls=NpEncoder, ensure_ascii=False))
+    print("###END_JSON###")
+    ###START_JSON###
 
-    # 5. Save to File
-    output_filename = f"{os.path.splitext(file_name)[0]}_insights.json"
-    output_path = os.path.join(OUTPUT_DIR, output_filename)
-
-    with open(output_path, 'w', encoding='utf-8') as f:
-        json.dump(final_output, f, cls=NpEncoder, indent=4)
-
-    print(json.dumps({"output_path": output_path,"output_filename": output_filename}))
 
 if __name__ == "__main__":
     generate_insights()

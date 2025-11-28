@@ -1,3 +1,4 @@
+import axios from "axios";
 import { motion } from "framer-motion";
 
 export default function Tiles({ jobIds }) {
@@ -8,7 +9,7 @@ export default function Tiles({ jobIds }) {
       </div>
     );
   }
-
+  
   return (
     <div className="w-full max-w-3xl mx-auto mt-10 space-y-6">
       <h2 className="text-3xl font-bold text-blue-300 text-center mb-4">
@@ -33,11 +34,34 @@ export default function Tiles({ jobIds }) {
             </p>
 
             <button
-              className="py-2 px-4 rounded-xl bg-blue-500 hover:bg-blue-600 transition 
-                         text-white font-semibold shadow-md"
-            >
-              View Details
-            </button>
+  className="py-2 px-4 rounded-xl bg-blue-500 hover:bg-blue-600 transition 
+             text-white font-semibold shadow-md"
+  onClick={() => {
+    axios
+      .get("http://localhost:3000/api/data-insight", {
+        params: { jobId:id },
+        responseType: "text"   // IMPORTANT
+      })
+      .then((res) => {
+        const htmlContent = res.data;
+
+        // Create a new Blob containing HTML
+        const blob = new Blob([htmlContent], { type: "text/html" });
+
+        // Create a temporary URL
+        const url = URL.createObjectURL(blob);
+
+        // Open new tab
+        window.open(url, "_blank");
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }}
+>
+  View Details
+</button>
+
           </motion.div>
         ))}
       </div>

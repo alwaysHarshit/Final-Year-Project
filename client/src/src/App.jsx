@@ -26,6 +26,7 @@ export default function FileUpload() {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             setMessage(`✅ ${res.data.message || "File uploaded successfully!"}`);
+            console.log(res.data);
         } catch (error) {
             console.error(error);
             setMessage("❌ Upload failed. Please try again.");
@@ -39,18 +40,9 @@ export default function FileUpload() {
                 <input type="file" accept=".csv" onChange={handleFileChange} />
                 <button type="submit">Upload</button>
             </form>
+
             <button onClick={()=>{
-                axios.get("http://localhost:3000/api/data-analysis",{params:{jobId:"1762973275723"}})
-                    .then(res=>{
-                        console.log(res.data)
-                    })
-                    .catch(err=>{
-                        console.log(err)
-                    }
-                    )
-            }}>push me</button>
-            <button onClick={()=>{
-                axios.get("http://localhost:3000/api/data-insight",{params:{jobId:"1762973275723"}})
+                axios.get("http://localhost:3000/api/data-insight",{params:{jobId:"1764327571411"}})
                     .then(res=>{
                         console.log(res.data)
                     })

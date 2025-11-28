@@ -1,15 +1,17 @@
 import {exec} from "child_process";
 import {JobSchema} from "../db.model.js";
+import {requestAi, uploadJsonFileAi} from "../utils/Ai.connection.js";
 
-export const cleaning = async (req, res) =>{
+export const analysisInternal = async (req, res) =>{
 
     const id = req.query.jobId;
 
     //get job from db
-
     const job= await JobSchema.findOne({jobId:id});
-    console.log("job fetched from db",job)
 
+    // call ai model to get cleaning script
+    const fileResponseAI=await uploadJsonFileAi(`../../shared/metaFiles/${job.metaFileName}`)
+    const result=await requestAi(fileResponseAI);
 
     //need to change the path of python and script
     const pythonPath = `"F:\\final year project\\.venv\\Scripts\\python.exe"`;

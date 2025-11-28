@@ -10,9 +10,12 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@genkit-ai/google-genai": "^1.24.0",
     "@google/genai": "^1.29.1",
+    "@google/generative-ai": "^0.24.1",
     "cors": "^2.8.5",
     "express": "^5.1.0",
+    "genkit": "^1.24.0",
     "mongodb": "^7.0.0",
     "mongoose": "^8.19.3"
   }

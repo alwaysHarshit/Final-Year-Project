@@ -2,9 +2,7 @@ import express from 'express';
 import cors from 'cors';
 
 import {router} from "./routes/server1.routes.js";
-import mongoose from "mongoose";
-import {main} from "./utils/Ai.connection.js";
-
+import mongoose from "mongoose";;
 const app=express()
 
 app.use(express.json())
